@@ -12,10 +12,6 @@ class App extends Component {
       years: 20
     }
 
-    this.principalChanged = this.principalChanged.bind(this);
-    this.interestRateChanged = this.interestRateChanged.bind(this);
-    this.yearsChanged = this.yearsChanged.bind(this);
-
     this.calculateMonthlyPayment = () => {
       const r = this.state.interestRate / 100
       const p = this.state.principal
@@ -28,23 +24,9 @@ class App extends Component {
       const mp = this.calculateMonthlyPayment()
       const n = this.state.years * 12
 
-      return (Math.round(mp * n * 100) / 100)
+      return mp * n
     }
   }
-
-  principalChanged(event) {
-    this.setState({principal: event.target.value})
-  }
-  interestRateChanged(event) {
-    this.setState({interestRate: event.target.value})
-  }
-  yearsChanged(event) {
-    this.setState({years: event.target.value})
-  }
-
-  componentDidMount() {
-    this.calculateReturnAmount()
-  }  
 
   render() {
     return (
@@ -54,38 +36,64 @@ class App extends Component {
         </header>
         <main className="container">
           <div className="row">
-            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Iznos kredita</label>
             </div>
-            <div className="col-xs-12 col-lg-2">
-              <input type="text" value={this.state.principal} onChange={this.principalChanged} />
+            <div className="col-xs-6 col-lg-2">
+            <NumberFormat
+              value={this.state.principal}
+              thousandSeparator={true}
+              decimalPrecision={0}
+              onChange={(e, values) => {this.setState({principal: values.value})}}
+              />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Kamata stopa (%)</label>
             </div>
-            <div className="col-xs-12 col-lg-2">
-              <input type="text" value={this.state.interestRate} onChange={this.interestRateChanged} />
+            <div className="col-xs-6 col-lg-2">
+            <NumberFormat
+              value={this.state.interestRate}
+              thousandSeparator={true}
+              decimalPrecision={2}
+              onChange={(e, values) => {this.setState({interestRate: values.value})}}
+              />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Broj godina</label>
             </div>
-            <div className="col-xs-12 col-lg-2">
-              <input type="text" value={this.state.years} onChange={this.yearsChanged}  />
+            <div className="col-xs-6 col-lg-2">
+            <NumberFormat
+              value={this.state.years}
+              thousandSeparator={true}
+              decimalPrecision={0}
+              type={'number'} 
+              allowNegative={false}
+              onChange={(e, values) => {this.setState({years: values.value})}}
+              />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
-              <label>Ukupno za vratiti</label>
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+              <label>Ukupno za vratiti:</label>
             </div>
-            <div className="col-xs-12 col-lg-2">
-              <NumberFormat value={this.calculateReturnAmount()} thousandSeparator={true} displayType={'text'} />
+            <div className="col-xs-6 col-lg-2">
+              <NumberFormat value={this.calculateReturnAmount()} thousandSeparator={true} displayType={'text'} decimalPrecision={2}/>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+              <label>Mjesečna rata:</label>
+            </div>
+            <div className="col-xs-6 col-lg-2">
+              <NumberFormat value={this.calculateMonthlyPayment()} thousandSeparator={true} displayType={'text'} decimalPrecision={2}/>
             </div>
           </div>
 
