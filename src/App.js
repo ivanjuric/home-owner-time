@@ -40,11 +40,11 @@ class App extends Component {
               <label>Iznos kredita</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-            <NumberFormat
-              value={this.state.principal}
-              thousandSeparator={true}
-              decimalPrecision={0}
-              onChange={(e, values) => {this.setState({principal: values.value})}}
+              <NumberFormat
+                value={this.state.principal}
+                thousandSeparator={true}
+                decimalPrecision={0}
+                onChange={(e, values) => {this.setState({principal: values.value})}}
               />
             </div>
           </div>
@@ -54,11 +54,11 @@ class App extends Component {
               <label>Kamata stopa (%)</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-            <NumberFormat
-              value={this.state.interestRate}
-              thousandSeparator={true}
-              decimalPrecision={2}
-              onChange={(e, values) => {this.setState({interestRate: values.value})}}
+              <NumberFormat
+                value={this.state.interestRate}
+                thousandSeparator={true}
+                decimalPrecision={2}
+                onChange={(e, values) => {this.setState({interestRate: values.value})}}
               />
             </div>
           </div>
@@ -68,13 +68,12 @@ class App extends Component {
               <label>Broj godina</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-            <NumberFormat
-              value={this.state.years}
-              thousandSeparator={true}
-              decimalPrecision={0}
-              type={'number'} 
-              allowNegative={false}
-              onChange={(e, values) => {this.setState({years: values.value})}}
+              <NumberFormat
+                value={this.state.years}
+                thousandSeparator={true}
+                decimalPrecision={0}
+                allowNegative={false}
+                onChange={(e, values) => {this.setState({years: values.value})}}
               />
             </div>
           </div>
@@ -84,7 +83,12 @@ class App extends Component {
               <label>Ukupno za vratiti:</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-              <NumberFormat value={this.calculateReturnAmount()} thousandSeparator={true} displayType={'text'} decimalPrecision={2}/>
+              <NumberFormat
+                value={this.calculateReturnAmount()}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalPrecision={2}
+              />
             </div>
           </div>
 
@@ -93,10 +97,14 @@ class App extends Component {
               <label>Mjesečna rata:</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-              <NumberFormat value={this.calculateMonthlyPayment()} thousandSeparator={true} displayType={'text'} decimalPrecision={2}/>
+              <NumberFormat
+                value={this.calculateMonthlyPayment()}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalPrecision={2}
+              />
             </div>
           </div>
-
         </main>
       </div>
     );

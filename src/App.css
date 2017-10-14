@@ -21,3 +21,7 @@
 .row {
   padding: 5px;
 }
+
+div > input {
+  width: 50%;
+}
