@@ -10,8 +10,10 @@
     "react-scripts": "1.0.14"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "react-number-format": "^3.0.0-alpha2"
   },
   "scripts": {
     "start": "react-scripts start",
