@@ -54,37 +54,37 @@ class App extends Component {
         </header>
         <main className="container">
           <div className="row">
-            <div className="col-xs-2 col-xs-offset-4">
+            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
               <label>Iznos kredita</label>
             </div>
-            <div className="col-xs-2">
+            <div className="col-xs-12 col-lg-2">
               <input type="text" value={this.state.principal} onChange={this.principalChanged} />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-2 col-xs-offset-4">
+            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
               <label>Kamata stopa (%)</label>
             </div>
-            <div className="col-xs-2">
+            <div className="col-xs-12 col-lg-2">
               <input type="text" value={this.state.interestRate} onChange={this.interestRateChanged} />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-2 col-xs-offset-4">
+            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
               <label>Broj godina</label>
             </div>
-            <div className="col-xs-2">
+            <div className="col-xs-12 col-lg-2">
               <input type="text" value={this.state.years} onChange={this.yearsChanged}  />
             </div>
           </div>
 
           <div className="row">
-            <div className="col-xs-2 col-xs-offset-4">
+            <div className="col-xs-12 col-lg-2 col-lg-offset-4">
               <label>Ukupno za vratiti</label>
             </div>
-            <div className="col-xs-2">
+            <div className="col-xs-12 col-lg-2">
               <NumberFormat value={this.calculateReturnAmount()} thousandSeparator={true} displayType={'text'} />
             </div>
           </div>
