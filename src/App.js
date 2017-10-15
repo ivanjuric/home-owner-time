@@ -7,7 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      principal: 100000,
+      principal: 150000,
       interestRate: 3.75,
       years: 20,
       rent: 350,
@@ -23,17 +23,27 @@ class App extends Component {
     }
 
     this.calculateReturnAmount = () => {
-      const mp = this.calculateMonthlyPayment()
-      const n = this.state.years * 12
-
-      return mp * n
+      return this.calculateMonthlyPayment() * this.state.years * 12
     }
 
     this.calculateTotalRent = () => {
-      const mp = this.state.rent
-      const n = this.state.yearsRent * 12
+      return this.state.rent * this.state.yearsRent * 12
+    }
 
-      return mp * n
+    this.calculateSavingsDifference = () => {
+      return (this.calculateMonthlyPayment() - this.state.rent) * this.state.yearsRent * 12
+    }
+
+    this.calculateNewMonthlyPayment = () => {
+      const r = this.state.interestRate / 100
+      const p = this.state.principal - this.calculateSavingsDifference()
+      const n = this.state.years * 12
+
+      return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n))
+    }
+
+    this.calculateNewReturnAmount = () => {
+      return this.calculateNewMonthlyPayment() * this.state.years * 12
     }
   }
 
@@ -44,11 +54,21 @@ class App extends Component {
           <h1 className="App-title">Izračunaj ratu kredita</h1>
         </header>
         <main className="container">
+
           <div className="row">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
               <label>Iznos kredita</label>
             </div>
-            <div className="col-xs-6 col-lg-2">
+            <div className="col-xs-4 col-lg-2">
+              <label>Stopa (%)</label>
+            </div>
+            <div className="col-xs-4 col-lg-2">
+              <label>Broj godina</label>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
               <NumberFormat
                 value={this.state.principal}
                 thousandSeparator={true}
@@ -57,28 +77,16 @@ class App extends Component {
                 this.setState({principal: values.value})
               }}/>
             </div>
-          </div>
-
-          <div className="row">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Kamata stopa (%)</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
+            <div className="col-xs-4 col-lg-2">
               <NumberFormat
                 value={this.state.interestRate}
                 thousandSeparator={true}
-                decimalPrecision={2}
+                decimalPrecision={0}
                 onChange={(e, values) => {
                 this.setState({interestRate: values.value})
               }}/>
             </div>
-          </div>
-
-          <div className="row">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Broj godina</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
+            <div className="col-xs-4 col-lg-2">
               <NumberFormat
                 value={this.state.years}
                 thousandSeparator={true}
@@ -90,29 +98,22 @@ class App extends Component {
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Ukupno za vratiti:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
-              <NumberFormat
+          <div className="row text-danger loan-amount">
+            <div className="col-xs-6 col-lg-1 col-lg-offset-4 App-intro">
+            <NumberFormat
                 value={this.calculateReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalPrecision={2}/>
             </div>
-          </div>
-
-          <div className="row">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Kamate:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
-              <NumberFormat
+            <div className="col-xs-6 col-lg-1  col-lg-offset-1">
+                (kamata:
+                <NumberFormat
                 value={this.calculateReturnAmount() - this.state.principal}
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalPrecision={2}/>
+                )
             </div>
           </div>
 
@@ -120,7 +121,7 @@ class App extends Component {
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Mjesečna rata:</label>
             </div>
-            <div className="col-xs-6 col-lg-2">
+            <div className="col-xs-6 col-lg-1 text-danger App-intro">
               <NumberFormat
                 value={this.calculateMonthlyPayment()}
                 thousandSeparator={true}
@@ -170,6 +171,63 @@ class App extends Component {
             <div className="col-xs-6 col-lg-2">
               <NumberFormat
                 value={this.calculateTotalRent()}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalPrecision={2}/>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+              <label>Štednja:</label>
+            </div>
+            <div className="col-xs-6 col-lg-2">
+              <NumberFormat
+                value={this.calculateSavingsDifference()}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalPrecision={2}/>
+                (<NumberFormat
+                value={this.calculateMonthlyPayment() - this.state.rent}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalPrecision={2}/> /mj.)
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+              <label>Novi kredit:</label>
+            </div>
+            <div className="col-xs-6 col-lg-2">
+              <NumberFormat
+                value={this.calculateNewReturnAmount()}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalPrecision={2}/>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+              <label>Razlika:</label>
+            </div>
+            <div className="col-xs-6 col-lg-2 text-success">
+              <NumberFormat
+                value={this.calculateReturnAmount() - this.calculateNewReturnAmount()}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalPrecision={2}/>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+              <label>Isplativost:</label>
+            </div>
+            <div className="col-xs-6 col-lg-2 text-success App-intro">
+              <NumberFormat
+                value={this.calculateReturnAmount() - this.calculateNewReturnAmount() - this.calculateTotalRent()}
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalPrecision={2}/>

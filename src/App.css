@@ -19,9 +19,13 @@
 }
 
 .row {
-  padding: 5px;
+  padding: 2px;
+}
+
+.loan-amount {
+  margin: 20px;
 }
 
 div > input {
-  width: 50%;
+  width: 100%;
 }
