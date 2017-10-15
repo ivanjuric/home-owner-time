@@ -14,37 +14,56 @@ class App extends Component {
       yearsRent: 3
     }
 
-    this.calculateMonthlyPayment = () => {
-      const r = this.state.interestRate / 100
-      const p = this.state.principal
-      const n = this.state.years * 12
+    this.calculateMonthlyPayment = this
+      .calculateMonthlyPayment
+      .bind(this)
+    this.calculateReturnAmount = this
+      .calculateReturnAmount
+      .bind(this)
+    this.calculateTotalRent = this
+      .calculateTotalRent
+      .bind(this)
+    this.calculateSavingsDifference = this
+      .calculateSavingsDifference
+      .bind(this)
+    this.calculateNewMonthlyPayment = this
+      .calculateNewMonthlyPayment
+      .bind(this)
+    this.calculateNewReturnAmount = this
+      .calculateNewReturnAmount
+      .bind(this)
+  }
 
-      return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n))
-    }
+  calculateMonthlyPayment() {
+    const r = this.state.interestRate / 100
+    const p = this.state.principal
+    const n = this.state.years * 12
 
-    this.calculateReturnAmount = () => {
-      return this.calculateMonthlyPayment() * this.state.years * 12
-    }
+    return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n))
+  }
 
-    this.calculateTotalRent = () => {
-      return this.state.rent * this.state.yearsRent * 12
-    }
+  calculateReturnAmount = () => {
+    return this.calculateMonthlyPayment() * this.state.years * 12
+  }
 
-    this.calculateSavingsDifference = () => {
-      return (this.calculateMonthlyPayment() - this.state.rent) * this.state.yearsRent * 12
-    }
+  calculateTotalRent = () => {
+    return this.state.rent * this.state.yearsRent * 12
+  }
 
-    this.calculateNewMonthlyPayment = () => {
-      const r = this.state.interestRate / 100
-      const p = this.state.principal - this.calculateSavingsDifference()
-      const n = this.state.years * 12
+  calculateSavingsDifference = () => {
+    return (this.calculateMonthlyPayment() - this.state.rent) * this.state.yearsRent * 12
+  }
 
-      return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n))
-    }
+  calculateNewMonthlyPayment = () => {
+    const r = this.state.interestRate / 100
+    const p = this.state.principal - this.calculateSavingsDifference()
+    const n = this.state.years * 12
 
-    this.calculateNewReturnAmount = () => {
-      return this.calculateNewMonthlyPayment() * this.state.years * 12
-    }
+    return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n))
+  }
+
+  calculateNewReturnAmount = () => {
+    return this.calculateNewMonthlyPayment() * this.state.years * 12
   }
 
   render() {
@@ -81,7 +100,7 @@ class App extends Component {
               <NumberFormat
                 value={this.state.interestRate}
                 thousandSeparator={true}
-                decimalPrecision={0}
+                decimalPrecision={2}
                 onChange={(e, values) => {
                 this.setState({interestRate: values.value})
               }}/>
@@ -98,35 +117,37 @@ class App extends Component {
             </div>
           </div>
 
-          <div className="row text-danger loan-amount">
-            <div className="col-xs-6 col-lg-1 col-lg-offset-4 App-intro">
-            <NumberFormat
+          <div className="row loan-amount">
+            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
+              <label>Ukupno:</label>
+            </div>
+            <div className="col-xs-4 col-lg-2 text-danger App-intro">
+              <NumberFormat
                 value={this.calculateReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalPrecision={2}/>
             </div>
-            <div className="col-xs-6 col-lg-1  col-lg-offset-1">
-                (kamata:
-                <NumberFormat
-                value={this.calculateReturnAmount() - this.state.principal}
-                thousandSeparator={true}
-                displayType={'text'}
-                decimalPrecision={2}/>
-                )
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Mjesečna rata:</label>
-            </div>
-            <div className="col-xs-6 col-lg-1 text-danger App-intro">
-              <NumberFormat
+            <div className="col-xs-4 col-lg-2 text-danger">
+              (<NumberFormat
                 value={this.calculateMonthlyPayment()}
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalPrecision={2}/>
+              /mj)
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
+              <label>Kamata:</label>
+            </div>
+            <div className="col-xs-4 col-lg-2 text-danger">
+            <NumberFormat
+            value={this.calculateReturnAmount() - this.state.principal}
+            thousandSeparator={true}
+            displayType={'text'}
+            decimalPrecision={2}/>
             </div>
           </div>
 
@@ -187,11 +208,12 @@ class App extends Component {
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalPrecision={2}/>
-                (<NumberFormat
+              (<NumberFormat
                 value={this.calculateMonthlyPayment() - this.state.rent}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/> /mj.)
+                decimalPrecision={2}/>
+              /mj.)
             </div>
           </div>
 
