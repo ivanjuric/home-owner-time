@@ -91,28 +91,28 @@ class App extends Component {
               <NumberFormat
                 value={this.state.principal}
                 thousandSeparator={true}
-                decimalPrecision={0}
-                onChange={(e, values) => {
-                this.setState({principal: values.value})
+                decimalScale={0}
+                onChange={(e) => {
+                this.setState({principal: e.target.value})
               }}/>
             </div>
             <div className="col-xs-4 col-lg-2">
               <NumberFormat
                 value={this.state.interestRate}
                 thousandSeparator={true}
-                decimalPrecision={2}
-                onChange={(e, values) => {
-                this.setState({interestRate: values.value})
+                decimalScale={2}
+                onChange={(e) => {
+                this.setState({interestRate: e.target.value})
               }}/>
             </div>
             <div className="col-xs-4 col-lg-2">
               <NumberFormat
                 value={this.state.years}
                 thousandSeparator={true}
-                decimalPrecision={0}
+                decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({years: values.value})
+                onChange={(e) => {
+                this.setState({years: e.target.value})
               }}/>
             </div>
           </div>
@@ -126,14 +126,14 @@ class App extends Component {
                 value={this.calculateReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
             </div>
             <div className="col-xs-4 col-lg-2 text-danger">
               (<NumberFormat
                 value={this.calculateMonthlyPayment()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
               /mj)
             </div>
           </div>
@@ -147,7 +147,7 @@ class App extends Component {
             value={this.calculateReturnAmount() - this.state.principal}
             thousandSeparator={true}
             displayType={'text'}
-            decimalPrecision={2}/>
+            decimalScale={2}/>
             </div>
           </div>
 
@@ -161,10 +161,10 @@ class App extends Component {
               <NumberFormat
                 value={this.state.rent}
                 thousandSeparator={true}
-                decimalPrecision={0}
+                decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({rent: values.value})
+                onChange={(e) => {
+                this.setState({rent: e.target.value})
               }}/>
             </div>
           </div>
@@ -177,10 +177,10 @@ class App extends Component {
               <NumberFormat
                 value={this.state.yearsRent}
                 thousandSeparator={true}
-                decimalPrecision={0}
+                decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({yearsRent: values.value})
+                onChange={(e) => {
+                this.setState({yearsRent: e.target.value})
               }}/>
             </div>
           </div>
@@ -194,7 +194,7 @@ class App extends Component {
                 value={this.calculateTotalRent()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
             </div>
           </div>
 
@@ -207,12 +207,12 @@ class App extends Component {
                 value={this.calculateSavingsDifference()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
               (<NumberFormat
                 value={this.calculateMonthlyPayment() - this.state.rent}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
               /mj.)
             </div>
           </div>
@@ -226,7 +226,7 @@ class App extends Component {
                 value={this.calculateNewReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
             </div>
           </div>
 
@@ -239,7 +239,7 @@ class App extends Component {
                 value={this.calculateReturnAmount() - this.calculateNewReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
             </div>
           </div>
 
@@ -252,7 +252,7 @@ class App extends Component {
                 value={this.calculateReturnAmount() - this.calculateNewReturnAmount() - this.calculateTotalRent()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2}/>
             </div>
           </div>
 
