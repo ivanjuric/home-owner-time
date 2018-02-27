@@ -92,8 +92,8 @@ class App extends Component {
                 value={this.state.principal}
                 thousandSeparator={true}
                 decimalScale={0}
-                onChange={(e, values) => {
-                this.setState({principal: values.value})
+                onChange={(e) => {
+                this.setState({principal: e.target.value})
               }}/>
             </div>
             <div className="col-xs-4 col-lg-2">
@@ -101,8 +101,8 @@ class App extends Component {
                 value={this.state.interestRate}
                 thousandSeparator={true}
                 decimalScale={2}
-                onChange={(e, values) => {
-                this.setState({interestRate: values.value})
+                onChange={(e) => {
+                this.setState({interestRate: e.target.value})
               }}/>
             </div>
             <div className="col-xs-4 col-lg-2">
@@ -111,8 +111,8 @@ class App extends Component {
                 thousandSeparator={true}
                 decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({years: values.value})
+                onChange={(e) => {
+                this.setState({years: e.target.value})
               }}/>
             </div>
           </div>
@@ -163,8 +163,8 @@ class App extends Component {
                 thousandSeparator={true}
                 decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({rent: values.value})
+                onChange={(e) => {
+                this.setState({rent: e.target.value})
               }}/>
             </div>
           </div>
@@ -179,8 +179,8 @@ class App extends Component {
                 thousandSeparator={true}
                 decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({yearsRent: values.value})
+                onChange={(e) => {
+                this.setState({yearsRent: e.target.value})
               }}/>
             </div>
           </div>
