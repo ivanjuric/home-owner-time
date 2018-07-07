@@ -1,24 +1,30 @@
 {
   "name": "home-owner-time",
-  "version": "0.1.0",
-  "main": "index.js",
+  "version": "0.2.0",
   "repository": "https://github.com/ivanjuric/home-owner-time.git",
   "author": "Ivan Jurić <ivan.juric1989@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "webpack --mode development",
+    "build": "webpack --mode production"
+  },
   "devDependencies": {
-    "react-scripts": "1.0.14"
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-number-format": "^3.0.0-alpha2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "bootstrap": "^4.1.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-number-format": "^3.4.2"
   }
 }

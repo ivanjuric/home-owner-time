@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import NumberFormat from 'react-number-format'
-import 'bootstrap/dist/css/bootstrap.css'
-import './App.css'
+import React, { Component } from 'react';
+import NumberFormat from 'react-number-format';
+import 'bootstrap/dist/css/bootstrap.css';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -74,7 +74,7 @@ class App extends Component {
         </header>
         <main className="container">
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-4 col-lg-2 col-lg-offset-3">
               <label>Iznos kredita</label>
             </div>
@@ -86,38 +86,40 @@ class App extends Component {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-4 col-lg-2 col-lg-offset-3">
               <NumberFormat
                 value={this.state.principal}
                 thousandSeparator={true}
-                decimalPrecision={0}
-                onChange={(e, values) => {
-                this.setState({principal: values.value})
-              }}/>
+                decimalScale={0}
+                onValueChange={(values, e) => {
+                  console.log(e);
+                  console.log(values);
+                  this.setState({ principal: values.value })
+                }} />
             </div>
             <div className="col-xs-4 col-lg-2">
               <NumberFormat
                 value={this.state.interestRate}
                 thousandSeparator={true}
-                decimalPrecision={2}
-                onChange={(e, values) => {
-                this.setState({interestRate: values.value})
-              }}/>
+                decimalScale={2}
+                onValueChange={(values, e) => {
+                  this.setState({ interestRate: values.value })
+                }} />
             </div>
             <div className="col-xs-4 col-lg-2">
               <NumberFormat
                 value={this.state.years}
                 thousandSeparator={true}
-                decimalPrecision={0}
+                decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({years: values.value})
-              }}/>
+                onValueChange={(values, e) => {
+                  this.setState({ years: values.value })
+                }} />
             </div>
           </div>
 
-          <div className="row loan-amount">
+          <div className="row justify-content-md-center loan-amount">
             <div className="col-xs-4 col-lg-2 col-lg-offset-3">
               <label>Ukupno:</label>
             </div>
@@ -126,34 +128,34 @@ class App extends Component {
                 value={this.calculateReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
             </div>
             <div className="col-xs-4 col-lg-2 text-danger">
               (<NumberFormat
                 value={this.calculateMonthlyPayment()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
               /mj)
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-4 col-lg-2 col-lg-offset-3">
               <label>Kamata:</label>
             </div>
             <div className="col-xs-4 col-lg-2 text-danger">
-            <NumberFormat
-            value={this.calculateReturnAmount() - this.state.principal}
-            thousandSeparator={true}
-            displayType={'text'}
-            decimalPrecision={2}/>
+              <NumberFormat
+                value={this.calculateReturnAmount() - this.state.principal}
+                thousandSeparator={true}
+                displayType={'text'}
+                decimalScale={2} />
             </div>
           </div>
 
-          <hr/>
+          <hr />
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Najam stana:</label>
             </div>
@@ -161,15 +163,15 @@ class App extends Component {
               <NumberFormat
                 value={this.state.rent}
                 thousandSeparator={true}
-                decimalPrecision={0}
+                decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({rent: values.value})
-              }}/>
+                onValueChange={(values, e) => {
+                  this.setState({ rent: values.value })
+                }} />
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Broj godina</label>
             </div>
@@ -177,15 +179,15 @@ class App extends Component {
               <NumberFormat
                 value={this.state.yearsRent}
                 thousandSeparator={true}
-                decimalPrecision={0}
+                decimalScale={0}
                 allowNegative={false}
-                onChange={(e, values) => {
-                this.setState({yearsRent: values.value})
-              }}/>
+                onValueChange={(values, e) => {
+                  this.setState({ yearsRent: values.value })
+                }} />
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Ukupno za najam:</label>
             </div>
@@ -194,11 +196,11 @@ class App extends Component {
                 value={this.calculateTotalRent()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Štednja:</label>
             </div>
@@ -207,17 +209,17 @@ class App extends Component {
                 value={this.calculateSavingsDifference()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
               (<NumberFormat
                 value={this.calculateMonthlyPayment() - this.state.rent}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
               /mj.)
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Novi kredit:</label>
             </div>
@@ -226,11 +228,11 @@ class App extends Component {
                 value={this.calculateNewReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Razlika:</label>
             </div>
@@ -239,11 +241,11 @@ class App extends Component {
                 value={this.calculateReturnAmount() - this.calculateNewReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
             </div>
           </div>
 
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-xs-6 col-lg-2 col-lg-offset-4">
               <label>Isplativost:</label>
             </div>
@@ -252,7 +254,7 @@ class App extends Component {
                 value={this.calculateReturnAmount() - this.calculateNewReturnAmount() - this.calculateTotalRent()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalPrecision={2}/>
+                decimalScale={2} />
             </div>
           </div>
 
