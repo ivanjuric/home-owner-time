@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { hot } from 'react-hot-loader';
 import NumberFormat from 'react-number-format';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
@@ -93,8 +94,6 @@ class App extends Component {
                 thousandSeparator={true}
                 decimalScale={0}
                 onValueChange={(values, e) => {
-                  console.log(e);
-                  console.log(values);
                   this.setState({ principal: values.value })
                 }} />
             </div>
@@ -264,4 +263,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default hot(module)(App);
