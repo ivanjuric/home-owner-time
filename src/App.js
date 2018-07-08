@@ -5,37 +5,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      principal: 150000,
-      interestRate: 3.75,
-      years: 20,
-      rent: 350,
-      yearsRent: 3
-    }
+  state = {
+    principal: 150000,
+    interestRate: 3.75,
+    years: 20,
+    rent: 350,
+    yearsRent: 3
+  };
 
-    this.calculateMonthlyPayment = this
-      .calculateMonthlyPayment
-      .bind(this)
-    this.calculateReturnAmount = this
-      .calculateReturnAmount
-      .bind(this)
-    this.calculateTotalRent = this
-      .calculateTotalRent
-      .bind(this)
-    this.calculateSavingsDifference = this
-      .calculateSavingsDifference
-      .bind(this)
-    this.calculateNewMonthlyPayment = this
-      .calculateNewMonthlyPayment
-      .bind(this)
-    this.calculateNewReturnAmount = this
-      .calculateNewReturnAmount
-      .bind(this)
-  }
-
-  calculateMonthlyPayment() {
+  calculateMonthlyPayment = () => {
     const r = this.state.interestRate / 100
     const p = this.state.principal
     const n = this.state.years * 12
