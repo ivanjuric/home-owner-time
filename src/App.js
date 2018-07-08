@@ -11,7 +11,8 @@ class App extends Component {
     years: 20,
     rent: 350,
     yearsRent: 3,
-    profitabilityVisible: false
+    profitabilityVisible: false,
+    currency: 'EUR'
   };
 
   calculateMonthlyPayment = () => {
@@ -51,6 +52,18 @@ class App extends Component {
       profitabilityVisible: !prevState.profitabilityVisible
     }));
   }
+
+  getCurrencySimbol() {
+    const selectedCurrency = this.state.currency;
+    if(selectedCurrency === 'HRK'){
+      return 'kn';
+    } else if(selectedCurrency === 'EUR') {
+      return '€';
+    } else {
+      return '💸';
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -65,41 +78,53 @@ class App extends Component {
 
             <div className="col-auto">
               <label>Iznos kredita</label>
-              <NumberFormat
-                className="form-control mb-2"
-                value={this.state.principal}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                onValueChange={(values, e) => {
-                  this.setState({ principal: values.value })
-                }} />
+              <div className="input-group mb-3">
+                <NumberFormat
+                  className="form-control"
+                  value={this.state.principal}
+                  thousandSeparator={true}
+                  decimalScale={0}
+                  allowNegative={false}
+                  onValueChange={(values, e) => {
+                    this.setState({ principal: values.value })
+                  }} />
+                <div className="input-group-append">
+                  <span className="input-group-text">{this.getCurrencySimbol()}</span>
+                </div>
+              </div>
             </div>
 
             <div className="col-auto">
-              <label>Stopa (%)</label>
-              <NumberFormat
-                className="form-control mb-2"
-                value={this.state.interestRate}
-                thousandSeparator={true}
-                decimalScale={2}
-                allowNegative={false}
-                onValueChange={(values, e) => {
-                  this.setState({ interestRate: values.value })
-                }} />
+              <label>Stopa</label>
+              <div className="input-group mb-3">
+                <NumberFormat
+                  className="form-control"
+                  value={this.state.interestRate}
+                  thousandSeparator={true}
+                  decimalScale={2}
+                  allowNegative={false}
+                  onValueChange={(values, e) => {
+                    this.setState({ interestRate: values.value })
+                  }} />
+                <div className="input-group-append">
+                  <span className="input-group-text">%</span>
+                </div>
+              </div>
             </div>
 
             <div className="col-auto">
               <label>Broj godina</label>
-              <NumberFormat
-                className="form-control mb-2"
-                value={this.state.years}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                onValueChange={(values, e) => {
-                  this.setState({ years: values.value })
-                }} />
+              <div className="input-group mb-3">
+                <NumberFormat
+                  className="form-control"
+                  value={this.state.years}
+                  thousandSeparator={true}
+                  decimalScale={0}
+                  allowNegative={false}
+                  onValueChange={(values, e) => {
+                    this.setState({ years: values.value })
+                  }} />
+              </div>
             </div>
 
           </div>
@@ -113,15 +138,16 @@ class App extends Component {
                 value={this.calculateReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalScale={2} />
+                decimalScale={0} />
+                <span>{' ' + this.getCurrencySimbol()}</span>
             </div>
             <div className="col-auto text-danger">
               (<NumberFormat
                 value={this.calculateMonthlyPayment()}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalScale={2} />
-              /mj)
+                decimalScale={0} />
+              {' ' + this.getCurrencySimbol()}/mj)
             </div>
           </div>
 
@@ -134,7 +160,8 @@ class App extends Component {
                 value={this.calculateReturnAmount() - this.state.principal}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalScale={2 } />
+                decimalScale={0} />
+                <span>{' ' + this.getCurrencySimbol()}</span>
             </div>
           </div>
 
