@@ -10,7 +10,7 @@ module.exports = {
         publicPath: '/'
     },
     devtool: 'inline-source-map',
-    devServer:{
+    devServer: {
         contentBase: './dist',
         hot: true,
         open: true
@@ -34,7 +34,11 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebPackPlugin(),
+        new HtmlWebPackPlugin(
+            {
+                title: 'Kreditni kalkulator'
+            }
+        ),
         new webpack.HotModuleReplacementPlugin()
     ]
 };
