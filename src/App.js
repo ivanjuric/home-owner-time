@@ -54,44 +54,45 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+
         <header className="App-header">
           <h1 className="App-title">Izračunaj ratu kredita</h1>
         </header>
+
         <main className="container">
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
-              <label>Iznos kredita</label>
-            </div>
-            <div className="col-xs-4 col-lg-2">
-              <label>Stopa (%)</label>
-            </div>
-            <div className="col-xs-4 col-lg-2">
-              <label>Broj godina</label>
-            </div>
-          </div>
+          <div className="row align-items-center justify-content-center">
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
+            <div className="col-auto">
+              <label>Iznos kredita</label>
               <NumberFormat
+                className="form-control mb-2"
                 value={this.state.principal}
                 thousandSeparator={true}
                 decimalScale={0}
+                allowNegative={false}
                 onValueChange={(values, e) => {
                   this.setState({ principal: values.value })
                 }} />
             </div>
-            <div className="col-xs-4 col-lg-2">
+
+            <div className="col-auto">
+              <label>Stopa (%)</label>
               <NumberFormat
+                className="form-control mb-2"
                 value={this.state.interestRate}
                 thousandSeparator={true}
                 decimalScale={2}
+                allowNegative={false}
                 onValueChange={(values, e) => {
                   this.setState({ interestRate: values.value })
                 }} />
             </div>
-            <div className="col-xs-4 col-lg-2">
+
+            <div className="col-auto">
+              <label>Broj godina</label>
               <NumberFormat
+                className="form-control mb-2"
                 value={this.state.years}
                 thousandSeparator={true}
                 decimalScale={0}
@@ -100,20 +101,21 @@ class App extends Component {
                   this.setState({ years: values.value })
                 }} />
             </div>
+
           </div>
 
-          <div className="row justify-content-md-center loan-amount">
-            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
+          <div className="row justify-content-center loan-amount">
+            <div className="col-auto">
               <label>Ukupno:</label>
             </div>
-            <div className="col-xs-4 col-lg-2 text-danger App-intro">
+            <div className="col-autp text-danger App-intro">
               <NumberFormat
                 value={this.calculateReturnAmount()}
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalScale={2} />
             </div>
-            <div className="col-xs-4 col-lg-2 text-danger">
+            <div className="col-auto text-danger">
               (<NumberFormat
                 value={this.calculateMonthlyPayment()}
                 thousandSeparator={true}
@@ -123,20 +125,21 @@ class App extends Component {
             </div>
           </div>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-4 col-lg-2 col-lg-offset-3">
+          <div className="row justify-content-center">
+            <div className="col-auto">
               <label>Kamata:</label>
             </div>
-            <div className="col-xs-4 col-lg-2 text-danger">
+            <div className="col-auto text-danger">
               <NumberFormat
                 value={this.calculateReturnAmount() - this.state.principal}
                 thousandSeparator={true}
                 displayType={'text'}
-                decimalScale={2} />
+                decimalScale={2 } />
             </div>
           </div>
 
           <hr />
+
           <p>
             <button className="btn btn-primary" type="button" onClick={this.toggleProfitabilityVisible}>
               Isplativost
