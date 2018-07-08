@@ -50,17 +50,17 @@ class App extends Component {
     return this.calculateNewMonthlyPayment() * this.state.years * 12;
   }
 
-  getCoef = () => {
-    if (this.state.exchangeRate === null) {
+  getCoef = (exchangeRate) => {
+    if (exchangeRate === null) {
       return 1;
     }
 
     if (this.state.currency === 'EUR') {
-      return this.state.exchangeRate;
+      return exchangeRate;
     }
 
     if (this.state.currency === 'HRK') {
-      return 1 / this.state.exchangeRate;
+      return 1 / exchangeRate;
     }
   }
 
@@ -71,15 +71,15 @@ class App extends Component {
   }
 
   handleCurrencyToggle = async () => {
-
-    if (this.state.exchangeRate === null) {
-      const exchangeRate = await this.getCurrencyExchangeRate();
+    let exchangeRate = this.state.exchangeRate;
+    if (exchangeRate === null) {
+      exchangeRate = await this.getCurrencyExchangeRate();
       this.setState({ exchangeRate: exchangeRate });
     }
 
     this.setState((prevState, props) => ({
       currency: prevState.currency === 'EUR' ? 'HRK' : 'EUR',
-      principal: prevState.principal * this.getCoef()
+      principal: prevState.principal * this.getCoef(exchangeRate)
     }));
   }
 
@@ -96,17 +96,17 @@ class App extends Component {
 
   async getCurrencyExchangeRate() {
     const key = this.getExchangeRateKey();
-    const localExchangeRate = localStorage.getItem(key);
+    const localExchangeRate = sessionStorage.getItem(key);
 
     if (localExchangeRate !== null) {
       return parseFloat(localExchangeRate);
     }
 
     const res = await axios.get('https://cors-anywhere.herokuapp.com/https://api.hnb.hr/tecajn/v1?valuta=EUR');
-    const exchangeRate = res.data[0]['Srednji za devize'];
+    const exchangeRate = res.data[0]['Srednji za devize'].replace(',', '.');
 
-    localStorage.setItem(key, exchangeRate);
-    return exchangeRate;
+    sessionStorage.setItem(key, exchangeRate);
+    return parseFloat(exchangeRate);
   }
 
   getExchangeRateKey() {
@@ -139,7 +139,7 @@ class App extends Component {
                     this.setState({ principal: values.value })
                   }} />
                 <div className="input-group-append" onClick={this.handleCurrencyToggle}>
-                  <span className="input-group-text">{this.getCurrencySimbol()}</span>
+                  <button className="input-group-text btn">{this.getCurrencySimbol()}</button>
                 </div>
               </div>
             </div>
