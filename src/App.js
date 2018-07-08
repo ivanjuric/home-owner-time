@@ -10,7 +10,8 @@ class App extends Component {
     interestRate: 3.75,
     years: 20,
     rent: 350,
-    yearsRent: 3
+    yearsRent: 3,
+    profitabilityVisible: false
   };
 
   calculateMonthlyPayment = () => {
@@ -45,6 +46,11 @@ class App extends Component {
     return this.calculateNewMonthlyPayment() * this.state.years * 12
   }
 
+  toggleProfitabilityVisible = () => {
+    this.setState((prevState, props) => ({
+      profitabilityVisible: !prevState.profitabilityVisible
+    }));
+  }
   render() {
     return (
       <div className="App">
@@ -131,107 +137,113 @@ class App extends Component {
           </div>
 
           <hr />
+          <p>
+            <button className="btn btn-primary" type="button" onClick={this.toggleProfitabilityVisible}>
+              Isplativost
+            </button>
+          </p>
+          <div className={this.state.profitabilityVisible ? 'collapse show' : 'collapse'}>
+            <div className="row justify-content-md-center">
+              <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+                <label>Najam stana:</label>
+              </div>
+              <div className="col-xs-6 col-lg-2">
+                <NumberFormat
+                  value={this.state.rent}
+                  thousandSeparator={true}
+                  decimalScale={0}
+                  allowNegative={false}
+                  onValueChange={(values, e) => {
+                    this.setState({ rent: values.value })
+                  }} />
+              </div>
+            </div>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Najam stana:</label>
+            <div className="row justify-content-md-center">
+              <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+                <label>Broj godina</label>
+              </div>
+              <div className="col-xs-6 col-lg-2">
+                <NumberFormat
+                  value={this.state.yearsRent}
+                  thousandSeparator={true}
+                  decimalScale={0}
+                  allowNegative={false}
+                  onValueChange={(values, e) => {
+                    this.setState({ yearsRent: values.value })
+                  }} />
+              </div>
             </div>
-            <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={this.state.rent}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                onValueChange={(values, e) => {
-                  this.setState({ rent: values.value })
-                }} />
-            </div>
-          </div>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Broj godina</label>
+            <div className="row justify-content-md-center">
+              <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+                <label>Ukupno za najam:</label>
+              </div>
+              <div className="col-xs-6 col-lg-2">
+                <NumberFormat
+                  value={this.calculateTotalRent()}
+                  thousandSeparator={true}
+                  displayType={'text'}
+                  decimalScale={2} />
+              </div>
             </div>
-            <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={this.state.yearsRent}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                onValueChange={(values, e) => {
-                  this.setState({ yearsRent: values.value })
-                }} />
-            </div>
-          </div>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Ukupno za najam:</label>
+            <div className="row justify-content-md-center">
+              <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+                <label>Štednja:</label>
+              </div>
+              <div className="col-xs-6 col-lg-2">
+                <NumberFormat
+                  value={this.calculateSavingsDifference()}
+                  thousandSeparator={true}
+                  displayType={'text'}
+                  decimalScale={2} />
+                (<NumberFormat
+                  value={this.calculateMonthlyPayment() - this.state.rent}
+                  thousandSeparator={true}
+                  displayType={'text'}
+                  decimalScale={2} />
+                /mj.)
             </div>
-            <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={this.calculateTotalRent()}
-                thousandSeparator={true}
-                displayType={'text'}
-                decimalScale={2} />
             </div>
-          </div>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Štednja:</label>
+            <div className="row justify-content-md-center">
+              <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+                <label>Novi kredit:</label>
+              </div>
+              <div className="col-xs-6 col-lg-2">
+                <NumberFormat
+                  value={this.calculateNewReturnAmount()}
+                  thousandSeparator={true}
+                  displayType={'text'}
+                  decimalScale={2} />
+              </div>
             </div>
-            <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={this.calculateSavingsDifference()}
-                thousandSeparator={true}
-                displayType={'text'}
-                decimalScale={2} />
-              (<NumberFormat
-                value={this.calculateMonthlyPayment() - this.state.rent}
-                thousandSeparator={true}
-                displayType={'text'}
-                decimalScale={2} />
-              /mj.)
-            </div>
-          </div>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Novi kredit:</label>
+            <div className="row justify-content-md-center">
+              <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+                <label>Razlika:</label>
+              </div>
+              <div className="col-xs-6 col-lg-2 text-success">
+                <NumberFormat
+                  value={this.calculateReturnAmount() - this.calculateNewReturnAmount()}
+                  thousandSeparator={true}
+                  displayType={'text'}
+                  decimalScale={2} />
+              </div>
             </div>
-            <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={this.calculateNewReturnAmount()}
-                thousandSeparator={true}
-                displayType={'text'}
-                decimalScale={2} />
-            </div>
-          </div>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Razlika:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2 text-success">
-              <NumberFormat
-                value={this.calculateReturnAmount() - this.calculateNewReturnAmount()}
-                thousandSeparator={true}
-                displayType={'text'}
-                decimalScale={2} />
-            </div>
-          </div>
-
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
-              <label>Isplativost:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2 text-success App-intro">
-              <NumberFormat
-                value={this.calculateReturnAmount() - this.calculateNewReturnAmount() - this.calculateTotalRent()}
-                thousandSeparator={true}
-                displayType={'text'}
-                decimalScale={2} />
+            <div className="row justify-content-md-center">
+              <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+                <label>Isplativost:</label>
+              </div>
+              <div className="col-xs-6 col-lg-2 text-success App-intro">
+                <NumberFormat
+                  value={this.calculateReturnAmount() - this.calculateNewReturnAmount() - this.calculateTotalRent()}
+                  thousandSeparator={true}
+                  displayType={'text'}
+                  decimalScale={2} />
+              </div>
             </div>
           </div>
 
