@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import NumberFormat from 'react-number-format';
+import axios from 'axios';
+import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
@@ -12,39 +14,54 @@ class App extends Component {
     rent: 350,
     yearsRent: 3,
     profitabilityVisible: false,
-    currency: 'EUR'
+    currency: 'EUR',
+    exchangeRate: null
   };
 
   calculateMonthlyPayment = () => {
-    const r = this.state.interestRate / 100
-    const p = this.state.principal
-    const n = this.state.years * 12
+    const r = this.state.interestRate / 100;
+    const p = this.state.principal;
+    const n = this.state.years * 12;
 
-    return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n))
+    return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n));
   }
 
   calculateReturnAmount = () => {
-    return this.calculateMonthlyPayment() * this.state.years * 12
+    return this.calculateMonthlyPayment() * this.state.years * 12;
   }
 
   calculateTotalRent = () => {
-    return this.state.rent * this.state.yearsRent * 12
+    return this.state.rent * this.state.yearsRent * 12;
   }
 
   calculateSavingsDifference = () => {
-    return (this.calculateMonthlyPayment() - this.state.rent) * this.state.yearsRent * 12
+    return (this.calculateMonthlyPayment() - this.state.rent) * this.state.yearsRent * 12;
   }
 
   calculateNewMonthlyPayment = () => {
-    const r = this.state.interestRate / 100
-    const p = this.state.principal - this.calculateSavingsDifference()
-    const n = this.state.years * 12
+    const r = this.state.interestRate / 100;
+    const p = this.state.principal - this.calculateSavingsDifference();
+    const n = this.state.years * 12;
 
-    return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n))
+    return (p * r / 12) / (1 - Math.pow((1 + r / 12), -n));
   }
 
   calculateNewReturnAmount = () => {
-    return this.calculateNewMonthlyPayment() * this.state.years * 12
+    return this.calculateNewMonthlyPayment() * this.state.years * 12;
+  }
+
+  getCoef = () => {
+    if (this.state.exchangeRate === null) {
+      return 1;
+    }
+
+    if (this.state.currency === 'EUR') {
+      return this.state.exchangeRate;
+    }
+
+    if (this.state.currency === 'HRK') {
+      return 1 / this.state.exchangeRate;
+    }
   }
 
   toggleProfitabilityVisible = () => {
@@ -53,15 +70,47 @@ class App extends Component {
     }));
   }
 
+  handleCurrencyToggle = async () => {
+
+    if (this.state.exchangeRate === null) {
+      const exchangeRate = await this.getCurrencyExchangeRate();
+      this.setState({ exchangeRate: exchangeRate });
+    }
+
+    this.setState((prevState, props) => ({
+      currency: prevState.currency === 'EUR' ? 'HRK' : 'EUR',
+      principal: prevState.principal * this.getCoef()
+    }));
+  }
+
   getCurrencySimbol() {
     const selectedCurrency = this.state.currency;
-    if(selectedCurrency === 'HRK'){
+    if (selectedCurrency === 'HRK') {
       return 'kn';
-    } else if(selectedCurrency === 'EUR') {
+    } else if (selectedCurrency === 'EUR') {
       return '€';
     } else {
       return '💸';
     }
+  }
+
+  async getCurrencyExchangeRate() {
+    const key = this.getExchangeRateKey();
+    const localExchangeRate = localStorage.getItem(key);
+
+    if (localExchangeRate !== null) {
+      return parseFloat(localExchangeRate);
+    }
+
+    const res = await axios.get('https://cors-anywhere.herokuapp.com/https://api.hnb.hr/tecajn/v1?valuta=EUR');
+    const exchangeRate = res.data[0]['Srednji za devize'];
+
+    localStorage.setItem(key, exchangeRate);
+    return exchangeRate;
+  }
+
+  getExchangeRateKey() {
+    return moment.utc().format('YYYY-MM-DD');
   }
 
   render() {
@@ -89,7 +138,7 @@ class App extends Component {
                   onValueChange={(values, e) => {
                     this.setState({ principal: values.value })
                   }} />
-                <div className="input-group-append">
+                <div className="input-group-append" onClick={this.handleCurrencyToggle}>
                   <span className="input-group-text">{this.getCurrencySimbol()}</span>
                 </div>
               </div>
@@ -142,7 +191,7 @@ class App extends Component {
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalScale={0} />
-                <span>{' ' + this.getCurrencySimbol()}</span>
+              <span>{' ' + this.getCurrencySimbol()}</span>
             </div>
             <div className="col-auto text-danger">
               (<NumberFormat
@@ -164,7 +213,7 @@ class App extends Component {
                 thousandSeparator={true}
                 displayType={'text'}
                 decimalScale={0} />
-                <span>{' ' + this.getCurrencySimbol()}</span>
+              <span>{' ' + this.getCurrencySimbol()}</span>
             </div>
           </div>
 
