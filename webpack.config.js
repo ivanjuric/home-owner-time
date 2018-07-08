@@ -36,7 +36,8 @@ module.exports = {
     plugins: [
         new HtmlWebPackPlugin(
             {
-                title: 'Kreditni kalkulator'
+                title: 'Kreditni kalkulator',
+                meta: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' }
             }
         ),
         new webpack.HotModuleReplacementPlugin()
