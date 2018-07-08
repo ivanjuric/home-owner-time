@@ -85,6 +85,7 @@ class App extends Component {
                   thousandSeparator={true}
                   decimalScale={0}
                   allowNegative={false}
+                  type={'tel'}
                   onValueChange={(values, e) => {
                     this.setState({ principal: values.value })
                   }} />
@@ -103,6 +104,7 @@ class App extends Component {
                   thousandSeparator={true}
                   decimalScale={2}
                   allowNegative={false}
+                  type={'tel'}
                   onValueChange={(values, e) => {
                     this.setState({ interestRate: values.value })
                   }} />
@@ -121,6 +123,7 @@ class App extends Component {
                   thousandSeparator={true}
                   decimalScale={0}
                   allowNegative={false}
+                  type={'tel'}
                   onValueChange={(values, e) => {
                     this.setState({ years: values.value })
                   }} />
