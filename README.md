@@ -2,7 +2,7 @@
 
 Calculate when it's the best time to stop renting and become a home owner
 
-Try it on: http://home-owner-time.surge.sh/
+Try it on: https://home-owner-time.surge.sh/
 
 # Usage
 
