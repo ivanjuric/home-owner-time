@@ -5,7 +5,12 @@ import moment from "moment";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 
-const App: React.FC = () => {
+enum Currency {
+  HRK = 191,
+  EUR = 978
+}
+
+function App() {
   const [state, setState] = useState({
     principal: 150000,
     interestRate: 3.75,
@@ -13,7 +18,7 @@ const App: React.FC = () => {
     rent: 350,
     yearsRent: 3,
     profitabilityVisible: false,
-    currency: "EUR",
+    currency: Currency.EUR,
     exchangeRate: 0
   });
   const calculateMonthlyPayment = () => {
@@ -53,12 +58,13 @@ const App: React.FC = () => {
       return 1;
     }
 
-    if (state.currency === "EUR") {
-      return exchangeRate;
-    }
-
-    if (state.currency === "HRK") {
-      return 1 / exchangeRate;
+    switch (state.currency) {
+      case Currency.EUR:
+        return exchangeRate;
+      case Currency.HRK:
+        return 1 / exchangeRate;
+      default:
+        return 1;
     }
   };
 
@@ -75,19 +81,19 @@ const App: React.FC = () => {
 
     setState({
       ...state,
-      currency: state.currency === "EUR" ? "HRK" : "EUR",
+      currency: state.currency === Currency.EUR ? Currency.HRK : Currency.EUR,
       principal: state.principal * getCoef(exchangeRate)
     });
   };
 
   const getCurrencySimbol = () => {
-    const selectedCurrency = state.currency;
-    if (selectedCurrency === "HRK") {
-      return "kn";
-    } else if (selectedCurrency === "EUR") {
-      return "€";
-    } else {
-      return "💸";
+    switch (state.currency) {
+      case Currency.HRK:
+        return "kn";
+      case Currency.EUR:
+        return "€";
+      default:
+        return "💸";
     }
   };
 
@@ -356,6 +362,6 @@ const App: React.FC = () => {
       </main>
     </div>
   );
-};
+}
 
 export default App;
