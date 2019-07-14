@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import NumberFormat from "react-number-format";
 import axios from "axios";
 import moment from "moment";
@@ -10,17 +10,40 @@ enum Currency {
   EUR = 978
 }
 
+const initialState = {
+  principal: 150000,
+  interestRate: 3.75,
+  years: 20,
+  rent: 350,
+  yearsRent: 3,
+  profitabilityVisible: false,
+  currency: Currency.EUR,
+  exchangeRate: 0
+};
+
+function reducer(state: any, action: any) {
+  switch (action.type) {
+    case "toggleProfitabilityVisible":
+      return { ...state, profitabilityVisible: !state.profitabilityVisible };
+    case "setProperty":
+      const name = action.payload.name;
+      const value = action.payload.value;
+
+      return { ...state, [name]: value };
+    case "changeCurrency":
+      const coef = action.payload;
+      return {
+        ...state,
+        currency: state.currency === Currency.EUR ? Currency.HRK : Currency.EUR,
+        principal: state.principal * coef
+      };
+    default:
+      throw new Error("Action not supported!");
+  }
+}
 function App() {
-  const [state, setState] = useState({
-    principal: 150000,
-    interestRate: 3.75,
-    years: 20,
-    rent: 350,
-    yearsRent: 3,
-    profitabilityVisible: false,
-    currency: Currency.EUR,
-    exchangeRate: 0
-  });
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const calculateMonthlyPayment = () => {
     const r = state.interestRate / 100;
     const p = state.principal;
@@ -68,22 +91,17 @@ function App() {
     }
   };
 
-  const toggleProfitabilityVisible = () => {
-    setState({ ...state, profitabilityVisible: !state.profitabilityVisible });
-  };
-
   const handleCurrencyToggle = async () => {
     let exchangeRate = state.exchangeRate;
     if (exchangeRate === 0) {
       exchangeRate = await getCurrencyExchangeRate();
-      setState({ ...state, exchangeRate: exchangeRate });
+      dispatch({
+        type: "setProperty",
+        payload: { name: "exchangeRate", value: exchangeRate }
+      });
     }
 
-    setState({
-      ...state,
-      currency: state.currency === Currency.EUR ? Currency.HRK : Currency.EUR,
-      principal: state.principal * getCoef(exchangeRate)
-    });
+    dispatch({ type: "changeCurrency", payload: getCoef(exchangeRate) });
   };
 
   const getCurrencySimbol = () => {
@@ -137,7 +155,10 @@ function App() {
                 allowNegative={false}
                 type={"tel"}
                 onValueChange={values => {
-                  setState({ ...state, principal: +values.value });
+                  dispatch({
+                    type: "setProperty",
+                    payload: { name: "principal", value: +values.value }
+                  });
                 }}
               />
               <div
@@ -162,7 +183,10 @@ function App() {
                 allowNegative={false}
                 type={"tel"}
                 onValueChange={values => {
-                  setState({ ...state, interestRate: +values.value });
+                  dispatch({
+                    type: "setProperty",
+                    payload: { name: "interestRate", value: +values.value }
+                  });
                 }}
               />
               <div className="input-group-append">
@@ -182,7 +206,10 @@ function App() {
                 allowNegative={false}
                 type={"tel"}
                 onValueChange={values => {
-                  setState({ ...state, years: +values.value });
+                  dispatch({
+                    type: "setProperty",
+                    payload: { name: "years", value: +values.value }
+                  });
                 }}
               />
             </div>
@@ -235,7 +262,7 @@ function App() {
           <button
             className="btn btn-primary"
             type="button"
-            onClick={toggleProfitabilityVisible}
+            onClick={() => dispatch({ type: "toggleProfitabilityVisible" })}
           >
             Isplativost
           </button>
@@ -254,7 +281,10 @@ function App() {
                 decimalScale={0}
                 allowNegative={false}
                 onValueChange={values => {
-                  setState({ ...state, rent: +values.value });
+                  dispatch({
+                    type: "setProperty",
+                    payload: { name: "rent", value: +values.value }
+                  });
                 }}
               />
             </div>
@@ -271,7 +301,10 @@ function App() {
                 decimalScale={0}
                 allowNegative={false}
                 onValueChange={values => {
-                  setState({ ...state, yearsRent: +values.value });
+                  dispatch({
+                    type: "setProperty",
+                    payload: { name: "yearsRent", value: +values.value }
+                  });
                 }}
               />
             </div>
