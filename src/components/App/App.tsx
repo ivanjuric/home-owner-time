@@ -1,9 +1,11 @@
 import React, { useReducer } from "react";
-import NumberFormat from "react-number-format";
 import axios from "axios";
 import moment from "moment";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
+
+import NumberInput from "../NumberInput/NumberInput";
+import NumberText from "../NumberText/NumberText";
 
 enum Currency {
   HRK = 191,
@@ -147,19 +149,10 @@ function App() {
           <div className="col-auto">
             <label>Iznos kredita</label>
             <div className="input-group mb-3">
-              <NumberFormat
-                className="form-control"
+              <NumberInput
+                name="principal"
                 value={state.principal}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                type={"tel"}
-                onValueChange={values => {
-                  dispatch({
-                    type: "setProperty",
-                    payload: { name: "principal", value: +values.value }
-                  });
-                }}
+                dispatch={dispatch}
               />
               <div
                 className="input-group-append"
@@ -175,19 +168,11 @@ function App() {
           <div className="col-auto">
             <label>Stopa</label>
             <div className="input-group mb-3">
-              <NumberFormat
-                className="form-control"
+              <NumberInput
+                name="interestRate"
                 value={state.interestRate}
-                thousandSeparator={true}
-                decimalScale={2}
-                allowNegative={false}
-                type={"tel"}
-                onValueChange={values => {
-                  dispatch({
-                    type: "setProperty",
-                    payload: { name: "interestRate", value: +values.value }
-                  });
-                }}
+                dispatch={dispatch}
+                precision={2}
               />
               <div className="input-group-append">
                 <span className="input-group-text">%</span>
@@ -198,19 +183,10 @@ function App() {
           <div className="col-auto">
             <label>Broj godina</label>
             <div className="input-group mb-3">
-              <NumberFormat
-                className="form-control"
+              <NumberInput
+                name="years"
                 value={state.years}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                type={"tel"}
-                onValueChange={values => {
-                  dispatch({
-                    type: "setProperty",
-                    payload: { name: "years", value: +values.value }
-                  });
-                }}
+                dispatch={dispatch}
               />
             </div>
           </div>
@@ -221,22 +197,12 @@ function App() {
             <label>Ukupno:</label>
           </div>
           <div className="col-autp text-danger App-intro">
-            <NumberFormat
-              value={calculateReturnAmount()}
-              thousandSeparator={true}
-              displayType={"text"}
-              decimalScale={0}
-            />
+            <NumberText value={calculateReturnAmount()} />
             <span>{" " + getCurrencySimbol()}</span>
           </div>
           <div className="col-auto text-danger">
             (
-            <NumberFormat
-              value={calculateMonthlyPayment()}
-              thousandSeparator={true}
-              displayType={"text"}
-              decimalScale={0}
-            />
+            <NumberText value={calculateMonthlyPayment()} />
             {" " + getCurrencySimbol()}/mj)
           </div>
         </div>
@@ -246,12 +212,7 @@ function App() {
             <label>Kamata:</label>
           </div>
           <div className="col-auto text-danger">
-            <NumberFormat
-              value={calculateReturnAmount() - state.principal}
-              thousandSeparator={true}
-              displayType={"text"}
-              decimalScale={0}
-            />
+            <NumberText value={calculateReturnAmount() - state.principal} />
             <span>{" " + getCurrencySimbol()}</span>
           </div>
         </div>
@@ -275,18 +236,7 @@ function App() {
               <label>Najam stana:</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={state.rent}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                onValueChange={values => {
-                  dispatch({
-                    type: "setProperty",
-                    payload: { name: "rent", value: +values.value }
-                  });
-                }}
-              />
+              <NumberInput name="rent" value={state.rent} dispatch={dispatch} />
             </div>
           </div>
 
@@ -295,17 +245,10 @@ function App() {
               <label>Broj godina</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-              <NumberFormat
+              <NumberInput
+                name="yearsRent"
                 value={state.yearsRent}
-                thousandSeparator={true}
-                decimalScale={0}
-                allowNegative={false}
-                onValueChange={values => {
-                  dispatch({
-                    type: "setProperty",
-                    payload: { name: "yearsRent", value: +values.value }
-                  });
-                }}
+                dispatch={dispatch}
               />
             </div>
           </div>
@@ -315,12 +258,7 @@ function App() {
               <label>Ukupno za najam:</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={calculateTotalRent()}
-                thousandSeparator={true}
-                displayType={"text"}
-                decimalScale={2}
-              />
+              <NumberText value={calculateTotalRent()} />
             </div>
           </div>
 
@@ -329,19 +267,9 @@ function App() {
               <label>Štednja:</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={calculateSavingsDifference()}
-                thousandSeparator={true}
-                displayType={"text"}
-                decimalScale={2}
-              />
+              <NumberText value={calculateSavingsDifference()} />
               (
-              <NumberFormat
-                value={calculateMonthlyPayment() - state.rent}
-                thousandSeparator={true}
-                displayType={"text"}
-                decimalScale={2}
-              />
+              <NumberText value={calculateMonthlyPayment() - state.rent} />
               /mj.)
             </div>
           </div>
@@ -351,12 +279,7 @@ function App() {
               <label>Novi kredit:</label>
             </div>
             <div className="col-xs-6 col-lg-2">
-              <NumberFormat
-                value={calculateNewReturnAmount()}
-                thousandSeparator={true}
-                displayType={"text"}
-                decimalScale={2}
-              />
+              <NumberText value={calculateNewReturnAmount()} />
             </div>
           </div>
 
@@ -365,11 +288,8 @@ function App() {
               <label>Razlika:</label>
             </div>
             <div className="col-xs-6 col-lg-2 text-success">
-              <NumberFormat
+              <NumberText
                 value={calculateReturnAmount() - calculateNewReturnAmount()}
-                thousandSeparator={true}
-                displayType={"text"}
-                decimalScale={2}
               />
             </div>
           </div>
@@ -379,15 +299,12 @@ function App() {
               <label>Isplativost:</label>
             </div>
             <div className="col-xs-6 col-lg-2 text-success App-intro">
-              <NumberFormat
+              <NumberText
                 value={
                   calculateReturnAmount() -
                   calculateNewReturnAmount() -
                   calculateTotalRent()
                 }
-                thousandSeparator={true}
-                displayType={"text"}
-                decimalScale={2}
               />
             </div>
           </div>
