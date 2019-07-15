@@ -1,6 +1,8 @@
 import React, { useReducer } from "react";
 import axios from "axios";
 import moment from "moment";
+import { Container, Row, Col, Button, InputGroup } from "react-bootstrap";
+
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 
@@ -144,43 +146,40 @@ function App() {
         <h1 className="App-title">Izračunaj ratu kredita</h1>
       </header>
 
-      <main className="container">
-        <div className="row align-items-center justify-content-center">
-          <div className="col-auto">
+      <Container>
+        <Row className="align-items-center justify-content-center">
+          <Col xs="auto">
             <label>Iznos kredita</label>
-            <div className="input-group mb-3">
+            <InputGroup className="mb-3">
               <NumberInput
                 name="principal"
                 value={state.principal}
                 dispatch={dispatch}
               />
-              <div
-                className="input-group-append"
-                onClick={handleCurrencyToggle}
-              >
-                <button className="input-group-text btn">
+              <InputGroup.Append onClick={handleCurrencyToggle}>
+                <Button variant="light" className="input-group-text">
                   {getCurrencySimbol()}
-                </button>
-              </div>
-            </div>
-          </div>
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </Col>
 
-          <div className="col-auto">
+          <Col xs="auto">
             <label>Stopa</label>
-            <div className="input-group mb-3">
+            <InputGroup className="mb-3">
               <NumberInput
                 name="interestRate"
                 value={state.interestRate}
                 dispatch={dispatch}
                 precision={2}
               />
-              <div className="input-group-append">
+              <InputGroup.Append>
                 <span className="input-group-text">%</span>
-              </div>
-            </div>
-          </div>
+              </InputGroup.Append>
+            </InputGroup>
+          </Col>
 
-          <div className="col-auto">
+          <Col xs="auto">
             <label>Broj godina</label>
             <div className="input-group mb-3">
               <NumberInput
@@ -189,116 +188,117 @@ function App() {
                 dispatch={dispatch}
               />
             </div>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="row justify-content-center loan-amount">
-          <div className="col-auto">
+        <Row className="justify-content-center loan-amount">
+          <Col xs="auto">
             <label>Ukupno:</label>
-          </div>
-          <div className="col-autp text-danger App-intro">
+          </Col>
+          <Col xs="auto" className="text-danger App-intro">
             <NumberText value={calculateReturnAmount()} />
             <span>{" " + getCurrencySimbol()}</span>
-          </div>
-          <div className="col-auto text-danger">
-            (
-            <NumberText value={calculateMonthlyPayment()} />
-            {" " + getCurrencySimbol()}/mj)
-          </div>
-        </div>
+          </Col>
+          <Col xs="auto">
+            <div className="text-danger">
+              (
+              <NumberText value={calculateMonthlyPayment()} />
+              {" " + getCurrencySimbol()}/mj)
+            </div>
+          </Col>
+        </Row>
 
-        <div className="row justify-content-center">
-          <div className="col-auto">
+        <Row className="justify-content-center">
+          <Col xs="auto">
             <label>Kamata:</label>
-          </div>
-          <div className="col-auto text-danger">
+          </Col>
+          <Col xs="auto" className="text-danger">
             <NumberText value={calculateReturnAmount() - state.principal} />
             <span>{" " + getCurrencySimbol()}</span>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
         <hr />
 
         <p>
-          <button
-            className="btn btn-primary"
-            type="button"
+          <Button
+            variant="primary"
             onClick={() => dispatch({ type: "toggleProfitabilityVisible" })}
           >
             Isplativost
-          </button>
+          </Button>
         </p>
         <div
           className={state.profitabilityVisible ? "collapse show" : "collapse"}
         >
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+          <Row className="justify-content-md-center">
+            <Col xs={6} lg={2}>
               <label>Najam stana:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
+            </Col>
+            <Col xs={6} lg={2}>
               <NumberInput name="rent" value={state.rent} dispatch={dispatch} />
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+          <Row className="justify-content-md-center">
+            <Col xs={6} lg={2}>
               <label>Broj godina</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
+            </Col>
+            <Col xs={6} lg={2}>
               <NumberInput
                 name="yearsRent"
                 value={state.yearsRent}
                 dispatch={dispatch}
               />
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+          <Row className="justify-content-md-center">
+            <Col xs={6} lg={2}>
               <label>Ukupno za najam:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
+            </Col>
+            <Col xs={6} lg={2}>
               <NumberText value={calculateTotalRent()} />
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+          <Row className="justify-content-md-center">
+            <Col xs={6} lg={2}>
               <label>Štednja:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
+            </Col>
+            <Col xs={6} lg={2}>
               <NumberText value={calculateSavingsDifference()} />
               (
               <NumberText value={calculateMonthlyPayment() - state.rent} />
               /mj.)
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+          <Row className="justify-content-md-center">
+            <Col xs={6} lg={2}>
               <label>Novi kredit:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2">
+            </Col>
+            <Col xs={6} lg={2}>
               <NumberText value={calculateNewReturnAmount()} />
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+          <Row className="justify-content-md-center">
+            <Col xs={6} lg={2}>
               <label>Razlika:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2 text-success">
+            </Col>
+            <Col xs={6} lg={2} className="text-success">
               <NumberText
                 value={calculateReturnAmount() - calculateNewReturnAmount()}
               />
-            </div>
-          </div>
+            </Col>
+          </Row>
 
-          <div className="row justify-content-md-center">
-            <div className="col-xs-6 col-lg-2 col-lg-offset-4">
+          <Row className="justify-content-md-center">
+            <Col xs={6} lg={2}>
               <label>Isplativost:</label>
-            </div>
-            <div className="col-xs-6 col-lg-2 text-success App-intro">
+            </Col>
+            <Col xs={6} lg={2} className="text-success App-intro">
               <NumberText
                 value={
                   calculateReturnAmount() -
@@ -306,10 +306,10 @@ function App() {
                   calculateTotalRent()
                 }
               />
-            </div>
-          </div>
+            </Col>
+          </Row>
         </div>
-      </main>
+      </Container>
     </div>
   );
 }

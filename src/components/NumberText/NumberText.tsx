@@ -11,7 +11,7 @@ function NumberText({ value, precision }: NumberTextProps) {
     <NumberFormat
       value={value}
       thousandSeparator={true}
-      displayType={"text"}
+      displayType="text"
       decimalScale={precision || 0}
     />
   );

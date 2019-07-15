@@ -1,5 +1,6 @@
 import React from "react";
 import NumberFormat from "react-number-format";
+import Form from "react-bootstrap/Form";
 
 type NumberInputProps = {
   name: string;
@@ -11,12 +12,12 @@ type NumberInputProps = {
 function NumberInput({ name, value, dispatch, precision }: NumberInputProps) {
   return (
     <NumberFormat
-      className="form-control"
+      customInput={Form.Control}
       value={value}
       thousandSeparator={true}
       decimalScale={precision || 0}
       allowNegative={false}
-      type={"tel"}
+      type="tel"
       onValueChange={values => {
         dispatch({
           type: "setProperty",
