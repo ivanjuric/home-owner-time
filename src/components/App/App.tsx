@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import { useReducer } from "react";
 import axios from "axios";
 import moment from "moment";
 import { Container, Row, Col, Button, InputGroup } from "react-bootstrap";
@@ -128,9 +128,9 @@ function App() {
     }
 
     const res = await axios.get(
-      "https://cors-anywhere.herokuapp.com/https://api.hnb.hr/tecajn/v1?valuta=EUR"
+      "https://cors-anywhere.herokuapp.com/https://api.hnb.hr/tecajn/v2?valuta=EUR"
     );
-    const exchangeRate = res.data[0]["Srednji za devize"].replace(",", ".");
+    const exchangeRate = res.data[0]["srednji_tecaj"].replace(",", ".");
 
     sessionStorage.setItem(key, exchangeRate);
     return parseFloat(exchangeRate);

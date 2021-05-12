@@ -14,8 +14,8 @@ Classic loan calculation of total loan cost, monthly installment and total inter
 
 Adjustable parameters are wanted loan amount, annual interest rate and period in years.
 
-Currency can be changed (by clicking symbol) between EUR and HRK, while retrieving exchange middle rate for current day from Croatian National Bank API (https://api.hnb.hr/tecajn/v1?valuta=EUR).
+Currency can be changed (by clicking symbol) between EUR and HRK, while retrieving exchange middle rate for current day from Croatian National Bank API (https://api.hnb.hr/tecajn/v2?valuta=EUR).
 
 ## 2. Profitability calculator
 
-*TODO - Explain with examples*
+_TODO - Explain with examples_
