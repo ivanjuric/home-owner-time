@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import axios from "axios";
 import moment from "moment";
-import { Container, Row, Col, Button, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Button, InputGroup, Form } from "react-bootstrap";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
@@ -149,45 +149,45 @@ function App() {
       <Container>
         <Row className="align-items-center justify-content-center">
           <Col xs="auto">
-            <label>Iznos kredita</label>
-            <InputGroup className="mb-3">
-              <NumberInput
-                name="principal"
-                value={state.principal}
-                dispatch={dispatch}
-              />
-              <InputGroup.Append onClick={handleCurrencyToggle}>
-                <Button variant="light" className="input-group-text">
-                  {getCurrencySimbol()}
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
+            <Form.Group className="mb-3">
+              <Form.Label>Iznos kredita</Form.Label>
+              <InputGroup className="mb-3">
+                <NumberInput
+                  name="principal"
+                  value={state.principal}
+                  dispatch={dispatch}
+                />
+                <Button variant="outline-success">{getCurrencySimbol()}</Button>
+              </InputGroup>
+            </Form.Group>
           </Col>
 
           <Col xs="auto">
-            <label>Stopa</label>
-            <InputGroup className="mb-3">
-              <NumberInput
-                name="interestRate"
-                value={state.interestRate}
-                dispatch={dispatch}
-                precision={2}
-              />
-              <InputGroup.Append>
+            <Form.Group className="mb-3">
+              <Form.Label>Stopa</Form.Label>
+              <InputGroup className="mb-3">
+                <NumberInput
+                  name="interestRate"
+                  value={state.interestRate}
+                  dispatch={dispatch}
+                  precision={2}
+                />
                 <span className="input-group-text">%</span>
-              </InputGroup.Append>
-            </InputGroup>
+              </InputGroup>
+            </Form.Group>
           </Col>
 
           <Col xs="auto">
-            <label>Broj godina</label>
-            <div className="input-group mb-3">
-              <NumberInput
-                name="years"
-                value={state.years}
-                dispatch={dispatch}
-              />
-            </div>
+            <Form.Group className="mb-3">
+              <Form.Label>Broj godina</Form.Label>
+              <div className="input-group mb-3">
+                <NumberInput
+                  name="years"
+                  value={state.years}
+                  dispatch={dispatch}
+                />
+              </div>
+            </Form.Group>
           </Col>
         </Row>
 
