@@ -98,7 +98,11 @@ function App() {
   const handleCurrencyToggle = async () => {
     let exchangeRate = state.exchangeRate;
     if (exchangeRate === 0) {
-      exchangeRate = await getCurrencyExchangeRate();
+      try {
+        exchangeRate = await getCurrencyExchangeRate();
+      } catch {
+        exchangeRate = 7.5;
+      }
       dispatch({
         type: "setProperty",
         payload: { name: "exchangeRate", value: exchangeRate }
@@ -157,7 +161,12 @@ function App() {
                   value={state.principal}
                   dispatch={dispatch}
                 />
-                <Button variant="outline-success">{getCurrencySimbol()}</Button>
+                <Button
+                  variant="outline-success"
+                  onClick={handleCurrencyToggle}
+                >
+                  {getCurrencySimbol()}
+                </Button>
               </InputGroup>
             </Form.Group>
           </Col>
